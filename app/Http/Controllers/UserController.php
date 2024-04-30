@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -36,5 +38,11 @@ class UserController extends Controller
             return response()->json(['error' => $exception]);
         }
 
+    }
+
+    public function logout(Request $request): JsonResponse{
+        $credentials = $request->input('user_token');
+        DB::delete('token',$credentials);
+        return response()->json(['Logout -> Token delete'],200);
     }
 }
